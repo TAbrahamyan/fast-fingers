@@ -1,0 +1,42 @@
+@import '../../app';
+
+.result {
+  .flex-content;
+
+  .content {
+    background: @white;
+    box-shadow: 2px 3px 13px -5px @defaultColor;
+    border-radius: 16px;
+    width: 20%;
+    padding: 3rem;
+
+    .wpm {
+      text-align: @center;
+
+      h1 { color: @greenColor }
+      p { font-size: 0.7em }
+    }
+
+    .info {
+      margin: 1rem 0;
+
+      div {
+        display: @displayFlex;
+        justify-content: space-between;
+        margin: 1rem 0;
+      }
+
+      .correct-words {
+        p {
+          &:last-child { color: @greenColor }
+        }
+      }
+
+      .incorrect-words {
+        p {
+          &:last-child { color: red }
+        }
+      }
+    }
+  }
+}

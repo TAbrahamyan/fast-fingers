@@ -1,0 +1,13 @@
+@import './_variables';
+
+.flex-content {
+  display: @displayFlex;
+  justify-content: @center;
+  align-items: @center;
+}
+
+.result-info(@contentName, @textColor) {
+  @contentName {
+    color: @textColor;
+  }
+}

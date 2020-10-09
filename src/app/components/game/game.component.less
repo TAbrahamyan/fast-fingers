@@ -1,0 +1,45 @@
+@import '../../app';
+
+.game {
+  .flex-content;
+  margin: 1rem 0;
+  user-select: none;
+
+  .content {
+    background: @white;
+    box-shadow: 2px 3px 13px -5px @defaultColor;
+    border-radius: 16px;
+    width: 70%;
+    padding: 4rem 3rem 3rem 3rem;
+
+    .words {
+      margin-bottom: 1rem;
+      background: #F4FAFF;
+      border: 1px solid @defaultColor;
+      border-radius: 16px;
+      box-shadow: 2px 3px 13px -5px @defaultColor;
+
+      p {
+        margin: 1rem;
+        width: 1150px;
+        user-select: none;
+      }
+    }
+
+    .typing {
+      .flex-content;
+      .mat-form-field { width: 350px }
+
+      .refresh {
+        background: @greenColor;
+        margin: 0 1rem;
+        font-size: 1em;
+      }
+
+      .timer {
+        background: #3c4d5c;
+        font-size: 1em;
+      }
+    }
+  }
+}
