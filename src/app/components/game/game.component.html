@@ -9,7 +9,7 @@
 
     <div class="typing">
       <mat-form-field>
-        <input matInput />
+        <input matInput (click)="startTypingHandler()" />
       </mat-form-field>
 
       <button mat-raised-button color="accent" class="refresh">
@@ -17,7 +17,7 @@
       </button>
 
       <button mat-raised-button color="accent" class="timer">
-        01:00
+        {{ formatTimer }}
       </button>
     </div>
   </div>

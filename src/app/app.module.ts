@@ -4,14 +4,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './components/header/header.component';
 import { GameComponent } from './components/game/game.component';
 import { ResultComponent } from './components/result/result.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     GameComponent,
     ResultComponent,
   ],
