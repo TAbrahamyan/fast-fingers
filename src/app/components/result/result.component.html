@@ -1,25 +1,25 @@
-<div class="result">
-  <div class="content">
+<section class="result" *ngIf="resultService.timer === 0">
+  <div class="result__content">
     <div class="wpm">
-      <h1>90 WPM</h1>
+      <h1>{{ resultService.correctWords }} WPM</h1>
       <p>(Words Per Minute)</p>
     </div>
 
     <div class="info">
-      <div class="accuracy">
-        <p>Accuracy</p>
-        <p><strong>74%</strong></p>
+      <div>
+        <p>Words</p>
+        <strong>400</strong>
       </div>
 
-      <div class="correct-words">
+      <div>
         <p>Correct words</p>
-        <p>90</p>
+        <p class="correct-words">{{ resultService.correctWords }}</p>
       </div>
 
-      <div class="incorrect-words">
+      <div>
         <p>Incorrect words</p>
-        <p>7</p>
+        <p class="incorrect-words">{{ resultService.incorrectWords }}</p>
       </div>
     </div>
   </div>
-</div>
+</section>

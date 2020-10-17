@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { wordList } from 'random-words';
+
+import { ResultService } from '../../services/result.service';
 
 @Component({
   selector: 'app-game',
@@ -7,25 +10,46 @@ import { Component } from '@angular/core';
 })
 
 export class GameComponent {
-  timer: number = 60;
+  words: string[] = wordList.sort(() => Math.random() - 0.5).slice(0, 400);
+  typingText: string  = '';
+  delay: number = 1000;
   interval: ReturnType<typeof setInterval>;
 
-  get formatTimer(): string {
-    return new Date(this.timer * 1000).toISOString().substr(14, 5);
-  }
+  constructor(public resultService: ResultService) { }
 
-  resetGameHandler(): void {
-    this.timer = 60;
-    clearInterval(this.interval);
+  checkWordsHandler(e: any): void {
+    if (e.data === ' ') {
+      if (this.typingText.trim() === this.words[0]) {
+        this.resultService.correctWords += 1;
+      } else {
+        this.resultService.incorrectWords += 1;
+      }
+
+      e.target.value = '';
+      this.typingText = '';
+
+      setTimeout(() => {
+        this.words.splice(0, 1);
+      }, this.delay / 2);
+    }
   }
 
   startTypingHandler(): void {
     this.interval = setInterval(() => {
-      this.timer--;
+      this.resultService.timer--;
 
-      if (this.timer <= 0) {
+      if (this.resultService.timer <= 0) {
         clearInterval(this.interval);
       }
-    }, 1000);
+    }, this.delay);
+  }
+
+  resetGameHandler(): void {
+    this.resultService.timer = 60;
+    clearInterval(this.interval);
+  }
+
+  get formatTimer(): string {
+    return new Date(this.resultService.timer * 1000).toISOString().substr(14, 5);
   }
 }

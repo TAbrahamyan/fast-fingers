@@ -1,24 +1,30 @@
-<div class="game">
-  <div class="content">
-    <div class="words">
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi labore nobis deleniti iusto dicta animi id, rem et earum expedita
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi labore nobis deleniti iusto dicta animi id, rem et earum expedita
+<section class="game">
+  <div class="game__content">
+    <div class="words" *ngIf="resultService.timer !== 0">
+      <p
+        *ngFor="let word of words"
+        [class]="typingText === '' ? 'default' : typingText === words[0] && typingText === word ? 'correct' : 'incorrect'"
+      >
+        {{ word }}
       </p>
     </div>
 
     <div class="typing">
       <mat-form-field>
-        <input matInput (click)="startTypingHandler()" />
+        <input matInput [(ngModel)]="typingText" (input)="checkWordsHandler($event)" [disabled]="resultService.timer === 60 || resultService.timer === 0" />
       </mat-form-field>
 
-      <button mat-raised-button color="accent" class="refresh" (click)="resetGameHandler()">
+      <button mat-raised-button color="primary" class="start" (click)="startTypingHandler()" [disabled]="resultService.timer !== 60">
+        <mat-icon>play_arrow</mat-icon>
+      </button>
+
+      <button mat-raised-button color="primary" class="refresh" (click)="resetGameHandler()" [disabled]="resultService.timer === 60">
         <mat-icon>refresh</mat-icon>
       </button>
 
-      <button mat-raised-button color="accent" class="timer">
+      <button mat-raised-button color="primary" class="timer">
         {{ formatTimer }}
       </button>
     </div>
   </div>
-</div>
+</section>
