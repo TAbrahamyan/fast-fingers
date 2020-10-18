@@ -3,7 +3,7 @@
     <div class="words" *ngIf="resultService.timer !== 0">
       <p
         *ngFor="let word of words"
-        [class]="typingText === '' ? 'default' : typingText === words[0] && typingText === word ? 'correct' : 'incorrect'"
+        [class]="typingText === words[0] && typingText === word ? 'correct' : ''"
       >
         {{ word }}
       </p>
@@ -11,6 +11,7 @@
 
     <div class="typing">
       <mat-form-field>
+        <mat-label>Start typing</mat-label>
         <input matInput [(ngModel)]="typingText" (input)="checkWordsHandler($event)" [disabled]="resultService.timer === 60 || resultService.timer === 0" />
       </mat-form-field>
 
@@ -18,7 +19,7 @@
         <mat-icon>play_arrow</mat-icon>
       </button>
 
-      <button mat-raised-button color="primary" class="refresh" (click)="resetGameHandler()" [disabled]="resultService.timer === 60">
+      <button mat-raised-button color="primary" class="refresh" (click)="resetGameHandler()">
         <mat-icon>refresh</mat-icon>
       </button>
 

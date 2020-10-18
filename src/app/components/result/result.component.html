@@ -1,24 +1,27 @@
 <section class="result" *ngIf="resultService.timer === 0">
   <div class="result__content">
     <div class="wpm">
-      <h1>{{ resultService.correctWords }} WPM</h1>
+      <h1>
+        {{ resultService.correctWords.length + resultService.incorrectWords.length }} WPM
+      </h1>
+
       <p>(Words Per Minute)</p>
     </div>
 
     <div class="info">
       <div>
-        <p>Words</p>
+        <p>Words count</p>
         <strong>400</strong>
       </div>
 
       <div>
         <p>Correct words</p>
-        <p class="correct-words">{{ resultService.correctWords }}</p>
+        <p class="correct-words">{{ resultService.correctWords.length }}</p>
       </div>
 
       <div>
         <p>Incorrect words</p>
-        <p class="incorrect-words">{{ resultService.incorrectWords }}</p>
+        <p class="incorrect-words">{{ resultService.incorrectWords.length }}</p>
       </div>
     </div>
   </div>

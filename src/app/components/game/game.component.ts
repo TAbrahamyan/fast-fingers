@@ -19,18 +19,21 @@ export class GameComponent {
 
   checkWordsHandler(e: any): void {
     if (e.data === ' ') {
-      if (this.typingText.trim() === this.words[0]) {
-        this.resultService.correctWords += 1;
-      } else {
-        this.resultService.incorrectWords += 1;
+      if (this.typingText === ' ') {
+        this.typingText = '';
+        e.target.value = '';
+
+        return;
       }
 
-      e.target.value = '';
-      this.typingText = '';
+      if (this.typingText.trim() === this.words[0]) {
+        this.resultService.correctWords.push(this.words[0]);
+      } else {
+        this.resultService.incorrectWords.push(this.words[0]);
+      }
 
-      setTimeout(() => {
-        this.words.splice(0, 1);
-      }, this.delay / 2);
+      this.typingText = '';
+      this.words.splice(0, 1);
     }
   }
 
@@ -45,7 +48,11 @@ export class GameComponent {
   }
 
   resetGameHandler(): void {
+    this.words = wordList.sort(() => Math.random() - 0.5).slice(0, 400);
+    this.typingText = '';
     this.resultService.timer = 60;
+    this.resultService.correctWords.length = 0;
+    this.resultService.incorrectWords.length = 0;
     clearInterval(this.interval);
   }
 
