@@ -4,8 +4,57 @@
   </header>
 
   <div class="content">
-    <app-game></app-game>
-    <app-info></app-info>
-    <app-result></app-result>
+    <section class="game">
+      <div class="game__content">
+        <div class="words" *ngIf="timer !== 0">
+          <p
+            #wordsRef
+            *ngFor="let word of wordsData; let i = index"
+            [ngClass]="{'current': current === i}"
+            [class]="word.status"
+          >{{ word.word }}</p>
+        </div>
+
+        <div class="typing">
+          <mat-form-field>
+            <mat-label>Start typing</mat-label>
+            <input matInput [(ngModel)]="enteredText" (keyup)="checkWordsHandler($event)" [disabled]="timer === 60 || timer === 0" />
+          </mat-form-field>
+
+          <button mat-raised-button color="primary" class="start" (click)="startTypingHandler()" [disabled]="timer !== 60">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+
+          <button mat-raised-button color="primary" class="refresh" (click)="resetGameHandler()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+
+          <button mat-raised-button color="primary" class="timer">
+            {{ formatTimer }}
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="result" *ngIf="timer === 0">
+      <div class="result__content">
+        <div class="info">
+          <div>
+            <p>Words count</p>
+            <strong>{{ wordsCount }}</strong>
+          </div>
+
+          <div>
+            <p>Correct words</p>
+            <p class="correct-words">{{ correctWords }}</p>
+          </div>
+
+          <div>
+            <p>Incorrect words</p>
+            <p class="incorrect-words">{{ incorrectWords }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </div>
