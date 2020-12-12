@@ -35,6 +35,11 @@
     <section class="result" *ngIf="timer === 0">
       <div class="result__content">
         <div class="info">
+          <div class="wpm">
+            <h1>{{ statistics.writingWordsCount / 5 | number: '1.0-0' }} WPM</h1>
+            <p>(Words Per Minute)</p>
+          </div>
+
           <div>
             <p>Words count</p>
             <strong>{{ statistics.wordsCount }}</strong>
@@ -42,7 +47,7 @@
 
           <div>
             <p>Accuracy</p>
-            <strong>{{ statistics.correctWords / statistics.writingWordsCount * 100 | number : '1.2-2' }}%</strong>
+            <strong>{{ statistics.correctWords / statistics.writingWordsCount * 100 | number: '1.2-2' }}%</strong>
           </div>
 
           <div>

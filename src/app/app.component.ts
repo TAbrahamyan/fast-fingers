@@ -53,9 +53,10 @@ export class AppComponent {
   }
 
   checkWordsHandler(keyCode: number): void {
+    this.startTyping();
+
     if (keyCode === 32) {
       this.compare();
-      this.startTyping();
       this.checkingCorrectnessWords();
     }
   }
