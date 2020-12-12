@@ -15,6 +15,7 @@ import { wordList } from 'random-words';
 export class AppComponent {
   wordsData: { word: string; status: string }[] = [];
   enteredText: string  = '';
+  isStartTyping: boolean = true;
   timer: number = 60;
   current: number = 0;
   wordsCount: number = 0;
@@ -34,8 +35,9 @@ export class AppComponent {
     this.wordsCount = this.wordsData.length;
   }
 
-  checkWordsHandler(e: any): void {
-    if (e.keyCode === 32) {
+  checkWordsHandler(keyCode: number): void {
+    if (keyCode === 32) {
+      this.startTyping();
       this.compare();
       this.wordsData[this.current].word === this.enteredText.trim() ? this.correctWords++ : this.incorrectWords++;
       this.current += 1;
@@ -50,26 +52,30 @@ export class AppComponent {
     }
   }
 
-  startTypingHandler(): void {
-    this.wordsRowCount = this.wordsRef
-      .reduce((acc, n) => (
-        (!acc.length || acc[acc.length - 1][0] !== n.nativeElement.offsetTop) && acc.push([ n.nativeElement.offsetTop, 0 ]),
-        acc[acc.length - 1][1]++,
-        acc
-      ), [])
-      .map(n => n[1]);
-
-    this.interval = setInterval(() => {
-      this.timer--;
-
-      if (this.timer <= 0) {
-        clearInterval(this.interval);
-      }
-    }, 1000);
-  }
-
   resetGameHandler(): void {
     window.location.reload();
+  }
+
+  startTyping(): void {
+    if (this.isStartTyping) {
+      this.wordsRowCount = this.wordsRef
+        .reduce((acc, n) => (
+          (!acc.length || acc[acc.length - 1][0] !== n.nativeElement.offsetTop) && acc.push([ n.nativeElement.offsetTop, 0 ]),
+          acc[acc.length - 1][1]++,
+          acc
+        ), [])
+        .map(n => n[1]);
+
+      this.interval = setInterval(() => {
+        this.timer--;
+
+        if (this.timer <= 0) {
+          clearInterval(this.interval);
+        }
+      }, 1000);
+
+      this.isStartTyping = false;
+    }
   }
 
   compare(): void {

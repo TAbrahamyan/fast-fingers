@@ -18,12 +18,8 @@
         <div class="typing">
           <mat-form-field>
             <mat-label>Start typing</mat-label>
-            <input matInput [(ngModel)]="enteredText" (keyup)="checkWordsHandler($event)" [disabled]="timer === 60 || timer === 0" />
+            <input matInput [(ngModel)]="enteredText" (keyup)="checkWordsHandler($event.keyCode)" [disabled]="timer === 0" />
           </mat-form-field>
-
-          <button mat-raised-button color="primary" class="start" (click)="startTypingHandler()" [disabled]="timer !== 60">
-            <mat-icon>play_arrow</mat-icon>
-          </button>
 
           <button mat-raised-button color="primary" class="refresh" (click)="resetGameHandler()">
             <mat-icon>refresh</mat-icon>
