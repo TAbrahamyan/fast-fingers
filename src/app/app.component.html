@@ -10,7 +10,7 @@
           <p
             #wordsRef
             *ngFor="let word of wordsData; let i = index"
-            [ngClass]="{'current': current === i}"
+            [ngClass]="{'current': statistics.current === i}"
             [class]="word.status"
           >{{ word.word }}</p>
         </div>
@@ -37,17 +37,22 @@
         <div class="info">
           <div>
             <p>Words count</p>
-            <strong>{{ wordsCount }}</strong>
+            <strong>{{ statistics.wordsCount }}</strong>
+          </div>
+
+          <div>
+            <p>Accuracy</p>
+            <strong>{{ statistics.correctWords / statistics.writingWordsCount * 100 | number : '1.2-2' }}%</strong>
           </div>
 
           <div>
             <p>Correct words</p>
-            <p class="correct-words">{{ correctWords }}</p>
+            <p class="correct-words">{{ statistics.correctWords }}</p>
           </div>
 
           <div>
             <p>Incorrect words</p>
-            <p class="incorrect-words">{{ incorrectWords }}</p>
+            <p class="incorrect-words">{{ statistics.incorrectWords }}</p>
           </div>
         </div>
       </div>

@@ -6,6 +6,20 @@ import {
 } from '@angular/core';
 import { wordList } from 'random-words';
 
+interface IWordsData {
+  word: string;
+  status: string;
+}
+
+interface IStatistics {
+  current: number;
+  wordsCount: number;
+  writingWordsCount: number;
+  correctWords: number;
+  incorrectWords: number;
+  wordsRowCount: number[];
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -13,16 +27,19 @@ import { wordList } from 'random-words';
 })
 
 export class AppComponent {
-  wordsData: { word: string; status: string }[] = [];
+  wordsData: IWordsData[] = [];
   enteredText: string  = '';
   isStartTyping: boolean = true;
-  timer: number = 60;
-  current: number = 0;
-  wordsCount: number = 0;
-  correctWords: number = 0;
-  incorrectWords: number = 0;
-  wordsRowCount: number[] = [];
   interval: ReturnType<typeof setInterval>;
+  timer: number = 60;
+  statistics: IStatistics = {
+    current: 0,
+    wordsCount: 0,
+    writingWordsCount: 0,
+    correctWords: 0,
+    incorrectWords: 0,
+    wordsRowCount: [],
+  };
 
   @ViewChildren('wordsRef') wordsRef: QueryList<ElementRef>;
 
@@ -32,33 +49,20 @@ export class AppComponent {
       .slice(0, Math.random() * (400 - 350) + 350 | 1);
 
     this.wordsData = words.map(word => ({ word, status: 'pending' }));
-    this.wordsCount = this.wordsData.length;
+    this.statistics.wordsCount = this.wordsData.length;
   }
 
   checkWordsHandler(keyCode: number): void {
     if (keyCode === 32) {
-      this.startTyping();
       this.compare();
-      this.wordsData[this.current].word === this.enteredText.trim() ? this.correctWords++ : this.incorrectWords++;
-      this.current += 1;
-
-      if (this.current === this.wordsRowCount[0]) {
-        this.wordsData.splice(0, this.current);
-        this.wordsRowCount.shift();
-        this.current = 0;
-      }
-
-      this.enteredText = '';
+      this.startTyping();
+      this.checkingCorrectnessWords();
     }
-  }
-
-  resetGameHandler(): void {
-    window.location.reload();
   }
 
   startTyping(): void {
     if (this.isStartTyping) {
-      this.wordsRowCount = this.wordsRef
+      this.statistics.wordsRowCount = this.wordsRef
         .reduce((acc, n) => (
           (!acc.length || acc[acc.length - 1][0] !== n.nativeElement.offsetTop) && acc.push([ n.nativeElement.offsetTop, 0 ]),
           acc[acc.length - 1][1]++,
@@ -79,11 +83,29 @@ export class AppComponent {
   }
 
   compare(): void {
-    if (this.wordsData[this.current].word === this.enteredText.trim()) {
-      this.wordsData[this.current].status = 'correct';
+    if (this.wordsData[this.statistics.current].word === this.enteredText.trim()) {
+      this.wordsData[this.statistics.current].status = 'correct';
     } else {
-      this.wordsData[this.current].status = 'incorrect';
+      this.wordsData[this.statistics.current].status = 'incorrect';
     }
+  }
+
+  checkingCorrectnessWords(): void {
+    this.wordsData[this.statistics.current].word === this.enteredText.trim() ? this.statistics.correctWords++ : this.statistics.incorrectWords++;
+    this.statistics.current += 1;
+    this.statistics.writingWordsCount += 1;
+
+    if (this.statistics.current === this.statistics.wordsRowCount[0]) {
+      this.wordsData.splice(0, this.statistics.current);
+      this.statistics.wordsRowCount.shift();
+      this.statistics.current = 0;
+    }
+
+    this.enteredText = '';
+  }
+
+  resetGameHandler(): void {
+    window.location.reload();
   }
 
   get formatTimer(): string {
