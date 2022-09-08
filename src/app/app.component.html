@@ -12,13 +12,15 @@
             *ngFor="let word of wordsData; let i = index"
             [ngClass]="{'current': statistics.current === i}"
             [class]="word.status"
-          >{{ word.word }}</p>
+          >
+            {{ word.word }}
+          </p>
         </div>
 
         <div class="typing">
           <mat-form-field>
             <mat-label>Start typing</mat-label>
-            <input matInput [(ngModel)]="enteredText" (keyup)="checkWordsHandler($event.keyCode)" [disabled]="timer === 0" />
+            <input matInput [(ngModel)]="enteredText" (keydown)="checkWordsHandler($event.keyCode)" [disabled]="timer === 0 || wordsData.length === 0" />
           </mat-form-field>
 
           <button mat-raised-button color="primary" class="refresh" (click)="resetGameHandler()">
@@ -32,30 +34,30 @@
       </div>
     </section>
 
-    <section class="result" *ngIf="timer === 0">
+    <section class="result" *ngIf="timer === 0 || wordsData.length === 0">
       <div class="result__content">
         <div class="info">
           <div class="wpm">
-            <h1>{{ statistics.writingWordsCount / 5 | number: '1.0-0' }} WPM</h1>
+            <h1>{{ statistics.writedWordsCount / 5 | number: '1.0-0' }} WPM</h1>
             <p>(Words Per Minute)</p>
           </div>
 
-          <div>
+          <div class="statistics">
             <p>Words count</p>
             <strong>{{ statistics.wordsCount }}</strong>
           </div>
 
-          <div>
+          <div class="statistics">
             <p>Accuracy</p>
-            <strong>{{ statistics.correctWords / statistics.writingWordsCount * 100 | number: '1.2-2' }}%</strong>
+            <strong>{{ statistics.correctWords / statistics.writedWordsCount * 100 | number: '1.2-2' }}%</strong>
           </div>
 
-          <div>
+          <div class="statistics">
             <p>Correct words</p>
             <p class="correct-words">{{ statistics.correctWords }}</p>
           </div>
 
-          <div>
+          <div class="statistics">
             <p>Incorrect words</p>
             <p class="incorrect-words">{{ statistics.incorrectWords }}</p>
           </div>

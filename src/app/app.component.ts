@@ -14,7 +14,7 @@ interface IWordsData {
 interface IStatistics {
   current: number;
   wordsCount: number;
-  writingWordsCount: number;
+  writedWordsCount: number;
   correctWords: number;
   incorrectWords: number;
   wordsRowCount: number[];
@@ -25,17 +25,15 @@ interface IStatistics {
   templateUrl: './app.component.html',
   styleUrls: [ './app.component.less' ]
 })
-
 export class AppComponent {
   wordsData: IWordsData[] = [];
   enteredText: string  = '';
   isStartTyping: boolean = true;
-  interval: ReturnType<typeof setInterval>;
   timer: number = 60;
   statistics: IStatistics = {
     current: 0,
     wordsCount: 0,
-    writingWordsCount: 0,
+    writedWordsCount: 0,
     correctWords: 0,
     incorrectWords: 0,
     wordsRowCount: [],
@@ -44,9 +42,12 @@ export class AppComponent {
   @ViewChildren('wordsRef') wordsRef: QueryList<ElementRef>;
 
   ngOnInit(): void {
+    const minWords: number = 350;
+    const maxWords: number = 400;
+
     const words: string[] = wordList
       .sort(() => Math.random() - 0.5)
-      .slice(0, Math.random() * (400 - 350) + 350 | 1);
+      .slice(0, Math.random() * (maxWords - minWords) + minWords);
 
     this.wordsData = words.map(word => ({ word, status: 'pending' }));
     this.statistics.wordsCount = this.wordsData.length;
@@ -56,12 +57,12 @@ export class AppComponent {
     this.startTyping();
 
     if (keyCode === 32) {
-      this.compare();
-      this.checkingCorrectnessWords();
+      this.compareWords();
+      this.setStatisticsStatus();
     }
   }
 
-  startTyping(): void {
+  private startTyping(): void {
     if (this.isStartTyping) {
       this.statistics.wordsRowCount = this.wordsRef
         .reduce((acc, n) => (
@@ -71,11 +72,11 @@ export class AppComponent {
         ), [])
         .map(n => n[1]);
 
-      this.interval = setInterval(() => {
+      const interval: ReturnType<typeof setInterval> = setInterval(() => {
         this.timer--;
 
         if (this.timer <= 0) {
-          clearInterval(this.interval);
+          clearInterval(interval);
         }
       }, 1000);
 
@@ -83,18 +84,15 @@ export class AppComponent {
     }
   }
 
-  compare(): void {
-    if (this.wordsData[this.statistics.current].word === this.enteredText.trim()) {
-      this.wordsData[this.statistics.current].status = 'correct';
-    } else {
-      this.wordsData[this.statistics.current].status = 'incorrect';
-    }
+  private compareWords(): void {
+    this.wordsData[this.statistics.current].status =
+      this.wordsData[this.statistics.current].word === this.enteredText.trim() ? 'correct' : 'incorrect';
   }
 
-  checkingCorrectnessWords(): void {
+  private setStatisticsStatus(): void {
     this.wordsData[this.statistics.current].word === this.enteredText.trim() ? this.statistics.correctWords++ : this.statistics.incorrectWords++;
     this.statistics.current += 1;
-    this.statistics.writingWordsCount += 1;
+    this.statistics.writedWordsCount += 1;
 
     if (this.statistics.current === this.statistics.wordsRowCount[0]) {
       this.wordsData.splice(0, this.statistics.current);
